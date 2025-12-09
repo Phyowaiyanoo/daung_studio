@@ -434,7 +434,33 @@ p { margin-bottom: 1.5rem; color: var(--color-text-muted); }
     font-size: 0.9rem;
     color: #666;
 }
+/* Button ပုံစံသွင်းခြင်း */
+.slide-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    
+    /* Animation အတွက် အဓိက အပိုင်း */
+    opacity: 0; /* အစမှာ မမြင်ရအောင်ထားမယ် */
+    transform: translateX(100px); /* ညာဘက်ဘေးသို့ တွန်းထုတ်ထားမယ် */
+    transition: all 0.4s ease; /* ချောမွေ့စွာ ဝင်လာဖို့ */
+    pointer-events: none; /* မပေါ်ခင် နှိပ်မရအောင် */
+}
 
+/* Button ပေါ်လာစေမည့် Class */
+.slide-button.show {
+    opacity: 1;
+    transform: translateX(0); /* မူလနေရာ ပြန်ရောက်မယ် */
+    pointer-events: all; /* နှိပ်လို့ ရသွားမယ် */
+}
 
 /* --- Responsive Design --- */
 @media (max-width: 992px) {
@@ -462,7 +488,9 @@ p { margin-bottom: 1.5rem; color: var(--color-text-muted); }
 
 </head>
 <body>
-
+<button id="slideBtn" class="slide-button">
+    UP
+</button>
     <header class="header">
         <div class="container header-content">
             <a href="#" class="logo">DAUNG<span>.</span></a>
@@ -600,6 +628,27 @@ p { margin-bottom: 1.5rem; color: var(--color-text-muted); }
     </footer>
 
     <script>
+        // Button ကို select မှတ်မယ်
+const button = document.getElementById('slideBtn');
+
+window.addEventListener('scroll', () => {
+    // 60vh ကို pixel အနေဖြင့် တွက်ချက်ခြင်း
+    const triggerHeight = window.innerHeight * 0.6;
+    
+    // လက်ရှိ scroll ရောက်နေတဲ့ နေရာ (window.scrollY)
+    if (window.scrollY > triggerHeight) {
+        // 60vh ကျော်သွားရင် class ထည့်မယ်
+        button.classList.add('show');
+    } else {
+        // မကျော်ရင် class ပြန်ဖြုတ်မယ်
+        button.classList.remove('show');
+    }
+});
+
+// (Optional) Button နှိပ်ရင် အပေါ်ဆုံးပြန်ရောက်အောင်
+button.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
         window.addEventListener('scroll', function() {
             const header = document.querySelector('.header');
             header.classList.toggle('scrolled', window.scrollY > 50);
